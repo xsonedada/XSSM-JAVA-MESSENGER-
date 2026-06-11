@@ -111,6 +111,8 @@ http://localhost:8080
 
 
 📸 Скриншоты
+<img width="1864" height="932" alt="image" src="https://github.com/user-attachments/assets/c3602ecc-bb08-4354-9e85-814b1855c81c" />
+
 Главный экран	
 
 
