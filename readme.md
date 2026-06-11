@@ -1,6 +1,3 @@
-cd C:\xssm
-
-[System.IO.File]::WriteAllText("$pwd\README.md", @'
 # 🚀 XSSM — eXtremely Secure Swift Messenger
 
 Современный мессенджер с акцентом на безопасность, стильный дизайн и богатый функционал.  
