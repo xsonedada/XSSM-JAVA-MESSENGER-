@@ -78,8 +78,9 @@ spring.datasource.url=jdbc:postgresql://localhost:5432/xssm_db
 spring.datasource.username=postgres
 spring.datasource.password=ваш_пароль
 spring.jpa.hibernate.ddl-auto=update
-Вариант B — H2 (для быстрого старта)
 
+
+Вариант B — H2 (для быстрого старта)
 Замените настройки на:
 
 properties
