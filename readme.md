@@ -6,7 +6,6 @@ cd C:\xssm
 Современный мессенджер с акцентом на безопасность, стильный дизайн и богатый функционал.  
 Построен на **Spring Boot 3.2** + **PostgreSQL** с использованием **WebSocket** для real‑time взаимодействия.
 
-![XSSM Preview](screenshots/preview.png)
 
 ---
 
