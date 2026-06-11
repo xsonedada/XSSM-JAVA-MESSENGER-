@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>XSSM – Чат</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="app">
+        <aside class="sidebar glass" id="sidebar">
+            <div class="sidebar-header">
+                <div class="avatar" id="sidebarAvatar">?</div>
+                <div class="profile-info">
+                    <div class="profile-name" id="sidebarName">Загрузка...</div>
+                    <div class="profile-status">В сети</div>
+                </div>
+                <div class="actions">
+                    <a href="/settings" class="icon-btn" title="Настройки"><i class="fas fa-cog"></i></a>
+                    <button class="icon-btn" id="themeToggleBtn" title="Тема"><i class="fas fa-moon"></i></button>
+                    <button class="icon-btn" onclick="openModal('createChatModal')" title="Новый чат"><i class="fas fa-plus"></i></button>
+                    <form action="/logout" method="post" style="display:inline;">
+                        <button class="icon-btn" type="submit" title="Выйти"><i class="fas fa-sign-out-alt"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="search-area">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Поиск..." id="searchInput">
+                </div>
+                <button class="icon-btn" id="searchModeBtn" title="Режим поиска"><i class="fas fa-comments"></i></button>
+            </div>
+            <div class="chat-list" id="chatList"></div>
+            <div class="user-results" id="userSearchResultsInline" style="display:none;"></div>
+        </aside>
+
+        <main class="chat-main">
+            <header class="chat-header glass">
+                <button class="icon-btn menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+                <div class="avatar" id="activeChatAvatar" onclick="showQuickProfile()"></div>
+                <div class="chat-header-info">
+                    <div class="chat-header-name" id="activeChatName">Выберите чат</div>
+                </div>
+                <button class="icon-btn" onclick="openChatInfo()" title="Информация о чате"><i class="fas fa-info-circle"></i></button>
+                <button class="icon-btn" onclick="openChatSearch()" title="Поиск в чате"><i class="fas fa-search"></i></button>
+            </header>
+
+            <div class="messages-container" id="messagesContainer"></div>
+
+            <!-- Панель реакций -->
+            <div class="reaction-picker" id="reactionPicker" style="display:none;">
+                <span class="reaction" onclick="addReaction('👍')">👍</span>
+                <span class="reaction" onclick="addReaction('❤️')">❤️</span>
+                <span class="reaction" onclick="addReaction('😂')">😂</span>
+                <span class="reaction" onclick="addReaction('😢')">😢</span>
+                <span class="reaction" onclick="addReaction('😡')">😡</span>
+            </div>
+
+            <div class="compose-bar glass">
+                <button class="icon-btn" onclick="document.getElementById('multiFileInput').click()"><i class="fas fa-paperclip"></i></button>
+                <input type="file" id="multiFileInput" multiple style="display:none;" onchange="sendFiles()">
+                <button class="icon-btn" id="voiceBtn" onmousedown="startRecording()" onmouseup="stopRecording()"><i class="fas fa-microphone"></i></button>
+                <div class="input-wrapper">
+                    <input type="text" class="message-input" placeholder="Сообщение..." id="messageInput" autofocus>
+                    <button class="icon-btn emoji-btn" id="emojiBtn"><i class="far fa-smile"></i></button>
+                    <div class="emoji-picker" id="emojiPicker" style="display:none;">
+                        <button>😀</button><button>😂</button><button>❤️</button><button>👍</button>
+                        <button>🎉</button><button>🔥</button><button>😢</button><button>😡</button>
+                    </div>
+                    <select id="expireSelect" class="expire-select">
+                        <option value="">⏳ Нет</option>
+                        <option value="30">30 сек</option>
+                        <option value="60">1 мин</option>
+                        <option value="300">5 мин</option>
+                        <option value="3600">1 час</option>
+                    </select>
+                </div>
+                <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Модальное окно информации о чате -->
+    <div class="modal" id="chatInfoModal">
+        <div class="modal-content glass">
+            <h3>Информация о чате</h3>
+            <div id="chatInfoContent">Загрузка...</div>
+            <button onclick="closeModal()">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Остальные модальные окна (профиль, создание чата, опрос) -->
+    <div class="modal" id="createChatModal">...</div>
+    <div class="modal" id="profileModal">...</div>
+    <div class="modal" id="pollModal">...</div>
+
+    <script src="/js/chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>XSSM – Регистрация</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-page">
+    <div class="particles" id="particles"></div>
+    <div class="auth-container">
+        <div class="auth-card glass">
+            <div class="auth-logo"><i class="fas fa-user-plus"></i> XSSM</div>
+            <div class="auth-title">Создать аккаунт</div>
+            <div class="error-message" id="errorMessage" style="display:none;"></div>
+            <div class="success-message" id="successMessage" style="display:none;"></div>
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" required placeholder="Логин">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" required placeholder="Email">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-id-card"></i>
+                <input type="text" id="displayName" placeholder="Имя (необязательно)">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" required placeholder="Пароль">
+            </div>
+            <button class="btn btn-primary" onclick="register()">
+                <i class="fas fa-check"></i> Зарегистрироваться
+            </button>
+            <div class="auth-footer">
+                Уже есть аккаунт? <a href="/login">Войти</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function register() {
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const displayName = document.getElementById('displayName').value.trim();
+            const password = document.getElementById('password').value;
+            if (!username || !email || !password) {
+                document.getElementById('errorMessage').textContent = 'Заполните все обязательные поля';
+                document.getElementById('errorMessage').style.display = 'block';
+                return;
+            }
+            try {
+                const resp = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, email, password, displayName})
+                });
+                const data = await resp.json();
+                if (!resp.ok) {
+                    document.getElementById('errorMessage').textContent = data.error;
+                    document.getElementById('errorMessage').style.display = 'block';
+                    return;
+                }
+                // Успех – автоматический вход
+                document.getElementById('successMessage').textContent = 'Успешно! Входим...';
+                document.getElementById('successMessage').style.display = 'block';
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/login';
+                form.innerHTML = `<input type="hidden" name="username" value="${username}"><input type="hidden" name="password" value="${password}">`;
+                document.body.appendChild(form);
+                form.submit();
+            } catch (e) {
+                document.getElementById('errorMessage').textContent = 'Ошибка соединения';
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        }
+        const particles = document.getElementById('particles');
+        for (let i=0; i<30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random()*100+'%';
+            p.style.top = Math.random()*100+'%';
+            p.style.width = p.style.height = (Math.random()*4+2)+'px';
+            particles.appendChild(p);
+        }
+    </script>
+</body>
+</html>

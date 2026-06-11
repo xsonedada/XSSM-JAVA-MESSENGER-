@@ -1,0 +1,135 @@
+cd C:\xssm
+
+[System.IO.File]::WriteAllText("$pwd\README.md", @'
+# 🚀 XSSM — eXtremely Secure Swift Messenger
+
+Современный мессенджер с акцентом на безопасность, стильный дизайн и богатый функционал.  
+Построен на **Spring Boot 3.2** + **PostgreSQL** с использованием **WebSocket** для real‑time взаимодействия.
+
+![XSSM Preview](screenshots/preview.png)
+
+---
+
+## ✨ Возможности
+
+- 🔐 **Безопасность**  
+  Spring Security, BCrypt-хеширование паролей, ролевая модель (USER / ADMIN).
+
+- 💬 **Чаты**  
+  Личные и групповые чаты, поиск пользователей по `@username`, закрепление чатов.
+
+- ✉️ **Сообщения**  
+  Отправка текста, изображений, голосовых сообщений, файлов.  
+  Markdown-форматирование (`**жирный**`, `*курсив*`, `~зачёркнутый~`).  
+  Ответы на сообщения, пересылка, удаление для всех / для себя.  
+  Самоуничтожающиеся сообщения (таймер).  
+  Реакции (эмодзи) на сообщения.  
+  Галочки прочтения (доставлено / прочитано).
+
+- 🎨 **Дизайн**  
+  Стеклянный морфизм («Glassmorphism») с поддержкой светлой и тёмной тем.  
+  Адаптивная вёрстка для мобильных устройств.  
+  Анимированные частицы фона, плавные переходы.
+
+- ⚡ **Real‑time**  
+  WebSocket для мгновенной доставки сообщений и индикатора «печатает…».
+
+- 🔍 **Поиск**  
+  Поиск по чатам, поиск внутри чата, поиск пользователей.
+
+- 📎 **Вложения**  
+  Поддержка загрузки изображений и других файлов.
+
+- 🔔 **Уведомления**  
+  Браузерные Push-уведомления при получении нового сообщения.
+
+- 🛠 **Дополнительно**  
+  Профиль с аватаром, смена пароля, информация о чате, опросы, стикеры.
+
+---
+
+## 🛠 Технологии
+
+| Слой          | Стек                                                                 |
+|---------------|----------------------------------------------------------------------|
+| Backend       | Java 21, Spring Boot 3.2, Spring Security, Spring Data JPA, WebSocket|
+| Database      | PostgreSQL (или H2 для разработки)                                   |
+| Frontend      | Thymeleaf, HTML5, CSS3 (Flexbox, CSS Grid), JavaScript (ES6+)       |
+| Build         | Gradle (Kotlin DSL)                                                  |
+| Real‑time     | WebSocket (Spring WebSocket)                                         |
+| Icons         | Font Awesome 6.5                                                     |
+
+---
+
+## 📦 Установка и запуск
+
+### 1. Клонируйте репозиторий
+
+```bash
+git clone https://github.com/xsonedada/XSSM-JAVA-MESSENGER-.git
+cd xssm
+```
+
+
+2. Настройте базу данных
+Вариант A — PostgreSQL (рекомендуется для production)
+
+Создайте базу данных xssm_db и пользователя.
+Параметры подключения в src/main/resources/application.properties:
+
+properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/xssm_db
+spring.datasource.username=postgres
+spring.datasource.password=ваш_пароль
+spring.jpa.hibernate.ddl-auto=update
+Вариант B — H2 (для быстрого старта)
+
+Замените настройки на:
+
+properties
+spring.datasource.url=jdbc:h2:file:./data/xssm_db
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+3. Запустите приложение
+bash
+./gradlew bootRun
+Приложение будет доступно по адресу:
+http://localhost:8080
+
+
+🖥 Использование
+Зарегистрируйтесь (/register).
+
+Войдите (/login).
+
+Создайте новый чат (кнопка + в боковой панели) или найдите пользователя по @username.
+
+Начните общение!
+
+
+
+📸 Скриншоты
+Главный экран	Профиль
+https://screenshots/chat.png	https://screenshots/profile.png
+(Добавьте свои скриншоты в папку screenshots/)
+
+
+
+
+🧪 Тестирование
+bash
+./gradlew test
+
+
+
+🤝 Вклад
+Pull request'ы приветствуются!
+Пожалуйста, сначала откройте issue для обсуждения предлагаемых изменений.
+
+
+
+
+📧 Контакты
+Автор: @xsonedev

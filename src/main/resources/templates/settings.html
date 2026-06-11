@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>XSSM – Настройки</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .settings-page { overflow-y: auto; }
+        .settings-container { max-width: 640px; margin: 40px auto; padding: 20px; }
+        .settings-card { padding: 32px; }
+        .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--primary); text-decoration: none; margin-bottom: 24px; }
+        .section-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+        .divider { border: 0; border-top: 1px solid var(--border); margin: 24px 0; }
+        .message { font-size: 0.9rem; margin-bottom: 16px; display: none; }
+        .success { color: #27ae60; }
+        .error { color: #e74c3c; }
+    </style>
+</head>
+<body class="settings-page">
+    <div class="particles" id="particles"></div>
+    <div class="settings-container">
+        <a href="/chat" class="back-link"><i class="fas fa-arrow-left"></i> Назад в чат</a>
+        <div class="settings-card glass">
+            <h2 class="section-title"><i class="fas fa-user-cog"></i> Профиль</h2>
+            <div id="profileMsg" class="message success"></div>
+            <div class="input-group">
+                <label>Логин</label>
+                <input type="text" id="sUsername" disabled>
+            </div>
+            <div class="input-group">
+                <label>Отображаемое имя</label>
+                <input type="text" id="sDisplayName" placeholder="Как вас называть">
+            </div>
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="sEmail" disabled>
+            </div>
+            <button class="btn btn-primary" onclick="saveProfile()"><i class="fas fa-save"></i> Сохранить</button>
+
+            <hr class="divider">
+
+            <h2 class="section-title"><i class="fas fa-key"></i> Сменить пароль</h2>
+            <div id="passMsg" class="message success"></div>
+            <div class="input-group">
+                <label>Текущий пароль</label>
+                <input type="password" id="currentPass" placeholder="••••••">
+            </div>
+            <div class="input-group">
+                <label>Новый пароль</label>
+                <input type="password" id="newPass" placeholder="••••••">
+            </div>
+            <button class="btn btn-primary" onclick="changePassword()"><i class="fas fa-lock"></i> Обновить пароль</button>
+        </div>
+    </div>
+
+    <script>
+        async function loadProfile() {
+            const r = await fetch('/api/user/me');
+            if (!r.ok) { window.location.href='/login'; return; }
+            const u = await r.json();
+            document.getElementById('sUsername').value = u.username;
+            document.getElementById('sDisplayName').value = u.displayName||'';
+            document.getElementById('sEmail').value = u.email;
+        }
+        loadProfile();
+
+        async function saveProfile() {
+            const displayName = document.getElementById('sDisplayName').value.trim();
+            const r = await fetch('/api/user/profile', {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({displayName})});
+            const msg = document.getElementById('profileMsg');
+            if (r.ok) { msg.textContent='Профиль обновлён'; msg.className='message success'; }
+            else { const err = await r.json(); msg.textContent=err.error||'Ошибка'; msg.className='message error'; }
+            msg.style.display='block';
+            setTimeout(()=>msg.style.display='none',3000);
+        }
+
+        async function changePassword() {
+            const currentPassword = document.getElementById('currentPass').value;
+            const newPassword = document.getElementById('newPass').value;
+            if (!currentPassword||!newPassword) return alert('Заполните оба поля');
+            const r = await fetch('/api/user/change-password', {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({currentPassword,newPassword})});
+            const msg = document.getElementById('passMsg');
+            if (r.ok) { msg.textContent='Пароль изменён'; msg.className='message success'; }
+            else { const err = await r.json(); msg.textContent=err.error||'Ошибка'; msg.className='message error'; }
+            msg.style.display='block';
+            setTimeout(()=>msg.style.display='none',3000);
+        }
+
+        // частицы
+        const particles = document.getElementById('particles');
+        for (let i=0; i<20; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random()*100+'%';
+            p.style.top = Math.random()*100+'%';
+            p.style.width = p.style.height = (Math.random()*3+1)+'px';
+            particles.appendChild(p);
+        }
+    </script>
+</body>
+</html>

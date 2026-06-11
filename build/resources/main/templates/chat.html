@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>XSSM вЂ“ Р§Р°С‚</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="app">
+        <aside class="sidebar glass" id="sidebar">
+            <div class="sidebar-header">
+                <div class="avatar" id="sidebarAvatar" onclick="openProfile()">?</div>
+                <div class="profile-info">
+                    <div class="profile-name" id="sidebarName">Р—Р°РіСЂСѓР·РєР°...</div>
+                    <div class="profile-status">Р’ СЃРµС‚Рё</div>
+                </div>
+                <div class="actions">
+                    <button class="icon-btn" id="themeToggleBtn" title="РўРµРјР°"><i class="fas fa-moon"></i></button>
+                    <button class="icon-btn" onclick="openModal('createChatModal')" title="РќРѕРІС‹Р№ С‡Р°С‚"><i class="fas fa-plus"></i></button>
+                    <form action="/logout" method="post" style="display:inline;">
+                        <button class="icon-btn" type="submit" title="Р’С‹Р№С‚Рё"><i class="fas fa-sign-out-alt"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="search-area">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="РџРѕРёСЃРє..." id="searchInput">
+                </div>
+                <button class="icon-btn" id="searchModeBtn"><i class="fas fa-comments"></i></button>
+            </div>
+            <div class="chat-list" id="chatList"></div>
+            <div class="user-results" id="userSearchResultsInline" style="display:none;"></div>
+        </aside>
+
+        <main class="chat-main">
+    <header class="chat-header glass">
+        <div class="avatar" id="activeChatAvatar" onclick="showQuickProfile()" style="cursor:pointer;"></div>
+        <div class="chat-header-info">
+            <div class="chat-header-name" id="activeChatName">Выберите чат</div>
+            <div class="chat-header-status" id="activeChatStatus"></div>
+        </div>
+        <button class="icon-btn" onclick="openChatSearch()" title="Поиск"><i class="fas fa-search"></i></button>
+        <button class="icon-btn" onclick="toggleMediaPanel()" title="Вложения"><i class="fas fa-paperclip"></i></button>
+    </header>
+    <div class="messages-container" id="messagesContainer"></div>
+    <div class="compose-bar glass">
+        <button class="icon-btn" onclick="document.getElementById('fileInput').click()"><i class="fas fa-plus-circle"></i></button>
+        <input type="file" id="fileInput" style="display:none;" multiple onchange="sendFile()">
+        <div class="input-wrapper">
+            <input type="text" class="message-input" placeholder="Сообщение..." id="messageInput" autofocus>
+            <button class="icon-btn" id="emojiBtn"><i class="far fa-smile"></i></button>
+        </div>
+        <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</main>
+    </div>
+
+    <!-- РљРѕРЅС‚РµРєСЃС‚РЅРѕРµ РјРµРЅСЋ -->
+    <div class="context-menu glass" id="contextMenu">
+        <button onclick="contextReply()"><i class="fas fa-reply"></i> РћС‚РІРµС‚РёС‚СЊ</button>
+        <button onclick="contextCopy()"><i class="fas fa-copy"></i> РљРѕРїРёСЂРѕРІР°С‚СЊ</button>
+        <button onclick="contextForward()"><i class="fas fa-share"></i> РџРµСЂРµСЃР»Р°С‚СЊ</button>
+        <button onclick="contextDelete()"><i class="fas fa-trash"></i> РЈРґР°Р»РёС‚СЊ</button>
+    </div>
+
+    <!-- Р‘С‹СЃС‚СЂС‹Р№ РїСЂРѕС„РёР»СЊ -->
+    <div class="quick-profile glass" id="quickProfile">
+        <img id="quickAvatar" src="" style="background:linear-gradient(135deg,#667eea,#764ba2);">
+        <div id="quickName" style="font-weight:600;"></div>
+        <div id="quickStatus" style="font-size:0.85rem;color:var(--online);">Р’ СЃРµС‚Рё</div>
+        <button class="btn" onclick="startPrivateChat(document.getElementById('quickName').textContent);document.getElementById('quickProfile').style.display='none'">РќР°РїРёСЃР°С‚СЊ</button>
+    </div>
+
+    <!-- РњРѕРґР°Р»СЊРЅРѕРµ РѕРєРЅРѕ РІР»РѕР¶РµРЅРёР№ -->
+    <div class="modal" id="mediaModal">
+        <div class="modal-content glass">
+            <h3>Р’Р»РѕР¶РµРЅРёСЏ</h3>
+            <div id="mediaGrid" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+            <button onclick="closeModal()">Р—Р°РєСЂС‹С‚СЊ</button>
+        </div>
+    </div>
+
+    <!-- РћСЃС‚Р°Р»СЊРЅС‹Рµ РјРѕРґР°Р»СЊРЅС‹Рµ РѕРєРЅР° (СЃРѕР·РґР°РЅРёРµ С‡Р°С‚Р°, РїСЂРѕС„РёР»СЊ, РѕРїСЂРѕСЃ) РёРґРµРЅС‚РёС‡РЅС‹ РїСЂРµРґС‹РґСѓС‰РёРј РІРµСЂСЃРёСЏРј, РѕСЃС‚Р°РІР»РµРЅС‹ РґР»СЏ СЃРѕРІРјРµСЃС‚РёРјРѕСЃС‚Рё -->
+    <div class="modal" id="createChatModal"> <div class="modal-content glass"> <h3>РќРѕРІС‹Р№ С‡Р°С‚</h3> <input type="text" id="chatNameInput" placeholder="РќР°Р·РІР°РЅРёРµ"> <input type="text" id="chatMembersInput" placeholder="РЈС‡Р°СЃС‚РЅРёРєРё"> <label><input type="checkbox" id="isGroupCheckbox"> Р“СЂСѓРїРїР°</label> <button class="btn" onclick="createChat()">РЎРѕР·РґР°С‚СЊ</button> <button onclick="closeModal()">РћС‚РјРµРЅР°</button> </div> </div>
+    <div class="modal" id="profileModal"> <div class="modal-content glass"> <h3>РџСЂРѕС„РёР»СЊ</h3> <img id="profileAvatarImg" src="" style="width:80px;height:80px;border-radius:50%;"> <p><strong id="profileUsername"></strong></p> <input type="file" id="avatarUpload"> <button class="btn" onclick="uploadAvatar()">Р—Р°РіСЂСѓР·РёС‚СЊ Р°РІР°С‚Р°СЂ</button> <button onclick="closeModal()">Р—Р°РєСЂС‹С‚СЊ</button> </div> </div>
+    <div class="modal" id="pollModal"> <div class="modal-content glass"> <h3>РћРїСЂРѕСЃ</h3> <input type="text" id="pollQuestion" placeholder="Р’РѕРїСЂРѕСЃ"> <div id="pollOptions"><input type="text" placeholder="Р’Р°СЂРёР°РЅС‚ 1"><input type="text" placeholder="Р’Р°СЂРёР°РЅС‚ 2"></div> <button class="btn" onclick="addPollOption()">Р”РѕР±Р°РІРёС‚СЊ</button> <button class="btn" onclick="createPoll()">РћС‚РїСЂР°РІРёС‚СЊ</button> <button onclick="closeModal()">РћС‚РјРµРЅР°</button> </div> </div>
+
+    <script src="/js/chat.js"></script>
+</body>
+</html>

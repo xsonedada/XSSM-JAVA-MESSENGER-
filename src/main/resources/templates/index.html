@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSSM Messenger</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <aside class="sidebar">
+            <div class="sidebar-header"><h2>XSSM</h2></div>
+            <div class="chat-list">
+                <div class="chat-item active">
+                    <div class="avatar">A</div>
+                    <div class="chat-info"><div class="chat-name">Alice</div><div class="chat-preview">Hi! How are you?</div></div>
+                    <span class="chat-time">12:34</span>
+                </div>
+                <div class="chat-item">
+                    <div class="avatar" style="background:linear-gradient(135deg,#ec4899,#f97316);">B</div>
+                    <div class="chat-info"><div class="chat-name">Bob</div><div class="chat-preview">See you later!</div></div>
+                    <span class="chat-time">11:20</span>
+                </div>
+            </div>
+        </aside>
+        <main class="main-chat">
+            <header class="chat-header">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div class="avatar" style="width:40px;height:40px;">A</div>
+                    <div><div style="font-weight:500;">Alice</div><div style="font-size:0.8rem;color:var(--neon-green);">Online</div></div>
+                </div>
+            </header>
+            <div class="messages-area" id="messagesArea">
+                <div class="message received"><div class="message-content">Hello! Welcome to XSSM <div class="message-time">12:30</div></div></div>
+            </div>
+            <div class="message-input-area">
+                <input type="text" placeholder="Type a message..." id="messageInput">
+                <button class="send-btn" onclick="sendMessage()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                </button>
+            </div>
+        </main>
+    </div>
+    <script src="/js/chat.js"></script>
+</body>
+</html>
