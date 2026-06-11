@@ -1,10 +1,13 @@
-﻿echo ".gradle" >> .gitignore
-echo "build/" >> .gitignore
-echo "!gradle/wrapper/gradle-wrapper.jar" >> .gitignore
-echo ".idea" >> .gitignore
-echo "*.iml" >> .gitignore
-echo ".vscode/" >> .gitignore
-echo ".env" >> .gitignore
-echo "uploads/" >> .gitignore
-echo "data/" >> .gitignore"# JDK and Gradle local (not needed in Git)" 
+﻿".gradle"
+"build/"
+"!gradle/wrapper/gradle-wrapper.jar"
+".idea"
+"*.iml"
+".vscode/"
+".env"
+"uploads/"
+"data/"
+
+
 "jdk-21.0.5+11/" 
+"gradle-local/" 
