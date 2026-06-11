@@ -6,4 +6,5 @@ echo "*.iml" >> .gitignore
 echo ".vscode/" >> .gitignore
 echo ".env" >> .gitignore
 echo "uploads/" >> .gitignore
-echo "data/" >> .gitignore
+echo "data/" >> .gitignore"# JDK and Gradle local (not needed in Git)" 
+"jdk-21.0.5+11/" 
